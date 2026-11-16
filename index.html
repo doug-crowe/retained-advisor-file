@@ -15,7 +15,7 @@
     font-family:-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;line-height:1.5}
   .wrap{max-width:1040px;margin:0 auto;padding:18px 16px 60px}
   .serif{font-family:Georgia,"Times New Roman",serif}
-  .logo-img{display:block;width:200px;max-width:60%;height:auto;margin:4px 0 2px}
+  .logo-img{display:block;width:200px;max-width:60%;height:auto;margin:4px auto 2px}
   .logo .y,.logo .b{color:var(--ink)} .logo .q{color:var(--g)}
   .banner{background:#FFF7E6;border:1px solid #E8D9A8;color:#7a6512;
     font-size:14px;border-radius:8px;padding:7px 10px;margin:8px 0 14px}
@@ -118,7 +118,8 @@
   <!-- STEP 1 -->
   <section class="screen on" id="s1"><div class="stepwrap">
     <div class="card">
-      <h1 class="serif">Open your Retained Advisor File</h1>
+      <h1 class="serif">What is Your Enterprise Engagement Value?</h1>
+      <h2 class="serif" style="margin:0 0 6px;color:var(--gd)">The Retained Advisor Worksheet</h2>
       <p class="sub">Four short steps. About 5 minutes. Your File is built for you at the end.</p>
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
         <div><label>First name</label><input type="text" id="fn" value=""></div>
@@ -132,8 +133,6 @@
         <label><input type="radio" name="seg" value="founder" checked> Founder with a small team</label>
         <label><input type="radio" name="seg" value="firm"> Established firm, still the rainmaker</label>
       </div>
-      <div class="consent"><input type="checkbox" id="consent" checked>
-        <span>I agree to be contacted about The Retained Advisor and Your Quantum Brand, and I have read the <a href="#" style="color:var(--gd)">privacy policy</a>.</span></div>
       <button class="btn" id="openBtn" onclick="openFile()">Open my File</button>
       <p class="hint" id="openErr" style="color:#b00;display:none"></p>
     </div></div>
@@ -201,7 +200,7 @@
       <h2 class="serif">Building your File</h2>
       <p class="sub" id="buildMsg">Reading your topic...</p>
       <div class="prog" style="margin:0 auto;max-width:240px"><i id="bbar" style="width:10%"></i></div>
-      <p class="hint" style="margin-top:14px">You can close this. We will email your link when it is ready.</p>
+      <p class="hint" style="margin-top:14px">Keep this page open. Your File appears here in about a minute.</p>
     </div></div>
   </section>
 
@@ -394,7 +393,6 @@
     var btn=document.getElementById('openBtn'), err=document.getElementById('openErr'); err.style.display='none';
     var email=(val('email')||'').trim();
     if(!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)){ err.textContent='Please enter a valid email.'; err.style.display='block'; return; }
-    if(!document.getElementById('consent').checked){ err.textContent='Please agree before continuing.'; err.style.display='block'; return; }
     var seg=(document.querySelector('input[name=seg]:checked')||{}).value||'';
     btn.disabled=true; btn.textContent='Opening...';
     try{
