@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The Retained Advisor File</title>
+<link rel="icon" type="image/png" href="https://ugggowcmigbwziwxejyq.supabase.co/storage/v1/object/public/app/icon.png">
+<style>
+  :root{
+    --g:#40A848; --gd:#2E7A33; --ink:#3A3A3A; --mut:#6B6B6B;
+    --tint:#E8F5E9; --line:#E0E6E0; --bg:#F4F7F4; --lock:#F1F1F1;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);
+    font-family:-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;line-height:1.5}
+  .wrap{max-width:1040px;margin:0 auto;padding:18px 16px 60px}
+  .serif{font-family:Georgia,"Times New Roman",serif}
+  .logo-img{display:block;width:200px;max-width:60%;height:auto;margin:4px 0 2px}
+  .logo .y,.logo .b{color:var(--ink)} .logo .q{color:var(--g)}
+  .banner{background:#FFF7E6;border:1px solid #E8D9A8;color:#7a6512;
+    font-size:14px;border-radius:8px;padding:7px 10px;margin:8px 0 14px}
+  .card{background:#fff;border:1px solid var(--line);border-radius:14px;
+    padding:20px 18px;box-shadow:0 1px 2px rgba(0,0,0,.04)}
+  h1{font-size:26px;margin:4px 0 4px} h2{font-size:19px;margin:0 0 2px}
+  .sub{color:var(--mut);font-size:16px;margin:0 0 16px}
+  label{display:block;font-size:15px;font-weight:600;margin:14px 0 5px}
+  input[type=text],input[type=email],input[type=number],textarea,select{
+    width:100%;padding:11px 12px;border:1px solid var(--line);border-radius:9px;
+    font-size:17px;font-family:inherit;color:var(--ink);background:#fff}
+  textarea{min-height:60px;resize:vertical}
+  .seg{display:flex;flex-direction:column;gap:8px;margin-top:6px}
+  .seg label{display:flex;align-items:center;gap:9px;font-weight:400;font-size:16px;
+    border:1px solid var(--line);border-radius:9px;padding:10px 12px;margin:0;cursor:pointer}
+  .seg input{accent-color:var(--g)}
+  .consent{display:flex;gap:9px;align-items:flex-start;font-size:14px;color:var(--mut);margin:16px 0 4px}
+  .consent input{margin-top:2px;accent-color:var(--g)}
+  .btn{display:block;width:100%;background:var(--g);color:#fff;border:0;border-radius:10px;
+    padding:14px;font-size:18px;font-weight:600;margin-top:18px;cursor:pointer}
+  .btn:disabled{background:#B9D9BC;cursor:not-allowed}
+  .btn.ghost{background:#fff;color:var(--gd);border:1px solid var(--g);margin-top:10px}
+  .prog{height:5px;background:#E8EDE8;border-radius:4px;margin:2px 0 16px;overflow:hidden}
+  .prog i{display:block;height:100%;background:var(--g);transition:width .3s}
+  .slider{margin:16px 0}
+  .slider .top{display:flex;justify-content:space-between;font-size:15px;font-weight:600;margin-bottom:3px}
+  .slider .val{color:var(--g)}
+  .slider input[type=range]{width:100%;accent-color:var(--g)}
+  .bar3{display:flex;justify-content:space-between;font-size:12px;color:var(--mut);margin-top:2px}
+  .total{background:var(--tint);border-radius:10px;padding:12px 14px;margin-top:12px;
+    display:flex;align-items:baseline;justify-content:space-between}
+  .total b{font-size:32px;color:var(--gd);font-family:Georgia,serif}
+  .band{font-size:15px;color:var(--ink);margin-top:10px;font-style:italic}
+  .money{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px}
+  .money .f{font-size:13px}
+  .hint{font-size:14px;color:var(--mut);margin-top:4px}
+  /* File */
+  .fhead{display:flex;justify-content:space-between;align-items:center;margin-bottom:4px}
+  .pill{background:var(--tint);color:var(--gd);font-size:13px;font-weight:700;
+    border-radius:20px;padding:4px 10px}
+  .panel{background:#fff;border:1px solid var(--line);border-radius:13px;padding:16px;margin:12px 0}
+  .panel h3{margin:0 0 8px;font-size:15px;text-transform:uppercase;letter-spacing:.6px;color:var(--g)}
+  .spot{font-size:17px;line-height:1.55} .reveal{font-size:16px;color:var(--ink);margin-top:12px;
+    border-top:1px dashed var(--line);padding-top:12px}
+  .big{font-family:Georgia,serif;font-size:39px;color:var(--gd)}
+  .scorebars{display:flex;flex-direction:column;gap:7px;margin-top:4px}
+  .sb{display:flex;align-items:center;gap:8px;font-size:14px}
+  .sb .t{width:130px;color:var(--mut)} .sb .track{flex:1;height:8px;background:#EDEDED;border-radius:5px}
+  .sb .track i{display:block;height:100%;background:var(--g);border-radius:5px}
+  .org{border:1px solid var(--line);border-radius:11px;padding:13px;margin-top:10px}
+  .org .n{font-weight:700;font-size:17px} .org .w{font-size:14px;color:var(--gd);word-break:break-all}
+  .org .m{font-size:15px;margin:7px 0 3px}
+  .src{display:inline-block;font-size:13px;color:var(--gd);border:1px solid var(--g);
+    border-radius:20px;padding:1px 8px;margin-left:4px;text-decoration:none}
+  .ev{font-size:14px;color:var(--ink);background:var(--tint);border-radius:8px;padding:8px 10px;margin-top:8px}
+  .ev b{color:var(--gd)}
+  .locked{background:var(--lock);border:1px dashed #CFCFCF;color:#8A8A8A}
+  .locked h3{color:#9a9a9a}
+  .lockrow{display:flex;align-items:center;gap:8px;font-size:15px}
+  .d2{background:var(--gd);color:#fff;border-radius:13px;padding:18px;margin:14px 0;text-align:center}
+  .d2 .line{font-family:Georgia,serif;font-size:21px;line-height:1.4}
+  .d2 .when{font-size:14px;opacity:.85;margin-top:8px}
+  .d2 a{display:inline-block;background:#fff;color:var(--gd);font-weight:700;text-decoration:none;
+    border-radius:9px;padding:11px 20px;margin-top:12px;font-size:16px}
+  .foot{font-size:12px;color:var(--mut);margin-top:18px;line-height:1.5}
+  .screen{display:none} .screen.on{display:block}
+  .stepwrap{max-width:600px;margin:0 auto}
+  .filegrid{display:grid;grid-template-columns:1fr;gap:12px;align-items:start}
+  @media(min-width:760px){.wrap{padding-left:26px;padding-right:26px}
+    .filegrid{grid-template-columns:1fr 1fr}.filegrid .span{grid-column:1/-1}
+    .money{max-width:100%}}
+  @media(min-width:1040px){.filegrid{grid-template-columns:1fr 1fr 1fr}}
+  .gap{font-size:16px}
+  @media print{
+    .banner,.btn,#d2confirm,.modal,[onclick*="Edit my answers"],.foot a{display:none!important}
+    .filegrid{grid-template-columns:1fr!important}
+    body{background:#fff} .wrap{max-width:100%;padding:0}
+    .panel,.d2{break-inside:avoid}
+  }
+  .modal{display:none;position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:50;
+    align-items:center;justify-content:center;padding:18px}
+  .modal.on{display:flex}
+  .modalbox{background:#fff;border-radius:14px;max-width:420px;width:100%;padding:18px 18px 20px;
+    box-shadow:0 10px 40px rgba(0,0,0,.25)}
+  .modalhdr{display:flex;justify-content:space-between;align-items:center;font-weight:700;
+    color:var(--gd);font-size:14px;text-transform:uppercase;letter-spacing:.6px;margin-bottom:8px}
+  .modalhdr .x{border:0;background:none;font-size:24px;line-height:1;color:var(--mut);cursor:pointer}
+  .modalphrase{font-size:16px;color:var(--ink);margin:4px 0 10px;font-style:italic}
+  .modalphrase:before{content:'\201C'} .modalphrase:after{content:'\201D'}
+  .modalurl{font-size:13px;color:var(--mut);word-break:break-all;margin:0 0 14px}
+  .modalopen{display:inline-block;background:var(--g);color:#fff;text-decoration:none;
+    border-radius:9px;padding:10px 16px;font-size:15px;font-weight:600}
+ .gap b{font-size:23px;font-family:Georgia,serif;color:var(--gd)}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <img src="https://ugggowcmigbwziwxejyq.supabase.co/storage/v1/object/public/app/logo.png" alt="Your Quantum Brand" class="logo-img">
+
+  <!-- STEP 1 -->
+  <section class="screen on" id="s1"><div class="stepwrap">
+    <div class="card">
+      <h1 class="serif">Open your Retained Advisor File</h1>
+      <p class="sub">Four short steps. About 5 minutes. Your File is built for you at the end.</p>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+        <div><label>First name</label><input type="text" id="fn" value=""></div>
+        <div><label>Last name</label><input type="text" id="ln" value=""></div>
+      </div>
+      <label>Email</label><input type="email" id="email" value="">
+      <label>LinkedIn profile URL</label><input type="text" id="li" value="">
+      <label>Which describes you?</label>
+      <div class="seg">
+        <label><input type="radio" name="seg" value="solo"> Solo consultant or advisor</label>
+        <label><input type="radio" name="seg" value="founder" checked> Founder with a small team</label>
+        <label><input type="radio" name="seg" value="firm"> Established firm, still the rainmaker</label>
+      </div>
+      <div class="consent"><input type="checkbox" id="consent" checked>
+        <span>I agree to be contacted about The Retained Advisor and Your Quantum Brand, and I have read the <a href="#" style="color:var(--gd)">privacy policy</a>.</span></div>
+      <button class="btn" id="openBtn" onclick="openFile()">Open my File</button>
+      <p class="hint" id="openErr" style="color:#b00;display:none"></p>
+    </div></div>
+  </section>
+
+  <!-- STEP 2 -->
+  <section class="screen" id="s2"><div class="stepwrap">
+    <div class="prog"><i style="width:25%"></i></div>
+    <div class="card">
+      <h2 class="serif">Score yourself</h2>
+      <p class="sub">One to ten on each. Be honest, not generous.</p>
+      <div id="sliders"></div>
+      <div class="total"><span>Your score, out of 50</span><b id="scoreT">0</b></div>
+      <div class="band" id="band"></div>
+      <button class="btn" onclick="go('s3',50)">Next</button>
+      <button class="btn ghost" onclick="go('s1')">Back</button>
+    </div></div>
+  </section>
+
+  <!-- STEP 3 -->
+  <section class="screen" id="s3"><div class="stepwrap">
+    <div class="prog"><i style="width:50%"></i></div>
+    <div class="card">
+      <h2 class="serif">One dream relationship, year one</h2>
+      <p class="sub">What would one relationship with the organization you most want be worth in the first year? Your numbers.</p>
+      <div class="money">
+        <div class="f"><label>Speaking</label><input type="number" id="m1" value="0" oninput="money()"></div>
+        <div class="f"><label>Training</label><input type="number" id="m2" value="0" oninput="money()"></div>
+        <div class="f"><label>Advisory</label><input type="number" id="m3" value="0" oninput="money()"></div>
+      </div>
+      <div class="total"><span>Year one value</span><b id="vTot">$0</b></div>
+      <label>How many years have you meant to land accounts like this?</label>
+      <input type="number" id="yrs" value="0" oninput="money()">
+      <button class="btn" onclick="go('s4',75)">Next</button>
+      <button class="btn ghost" onclick="go('s2',25)">Back</button>
+    </div></div>
+  </section>
+
+  <!-- STEP 4 -->
+  <section class="screen" id="s4"><div class="stepwrap">
+    <div class="prog"><i style="width:75%"></i></div>
+    <div class="card">
+      <h2 class="serif">Your topic</h2>
+      <p class="sub">This is what we research into 3 organizations that gather the people you serve.</p>
+      <label>Your speaking or consulting topic</label>
+      <input type="text" id="t_topic" value="" placeholder="e.g. Leadership development for manufacturing executives">
+      <label>Who you serve</label>
+      <input type="text" id="t_aud" value="" placeholder="e.g. Mid-market manufacturers">
+      <label>A client result you are proud of</label>
+      <textarea id="t_res" placeholder="One result you are proud of"></textarea>
+      <label>Dream organization (optional)</label>
+      <input type="text" id="t_dream" placeholder="Leave blank if you are not sure">
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+        <div><label>Decision-makers you tried to reach (last 12 mo.)</label><input type="number" id="t_try" value="0"></div>
+        <div><label>How many replied</label><input type="number" id="t_rep" value="0"></div>
+      </div>
+      <button class="btn" onclick="build()">Build my File</button>
+      <button class="btn ghost" onclick="go('s3',50)">Back</button>
+    </div></div>
+  </section>
+
+  <!-- BUILDING -->
+  <section class="screen" id="s5"><div class="stepwrap">
+    <div class="card" style="text-align:center;padding:40px 18px">
+      <h2 class="serif">Building your File</h2>
+      <p class="sub" id="buildMsg">Reading your topic...</p>
+      <div class="prog" style="margin:0 auto;max-width:240px"><i id="bbar" style="width:10%"></i></div>
+      <p class="hint" style="margin-top:14px">You can close this. We will email your link when it is ready.</p>
+    </div></div>
+  </section>
+
+  <!-- THE FILE -->
+  <section class="screen" id="file">
+    <div class="fhead"><h1 class="serif" style="margin:0" id="fName">Dana Reyes</h1><span class="pill">2 of 5 parts open</span></div>
+    <p class="sub">Your Retained Advisor File</p>
+    <p style="margin:-8px 0 6px"><a href="#" onclick="go('s4',75);return false" style="color:var(--gd);font-size:14px;font-weight:600;text-decoration:none">&#8592; Edit my answers</a></p>
+
+    <div class="filegrid">
+    <div class="panel span">
+      <h3>Spotlight on you</h3>
+      <div class="spot" id="fSpot">Dana Reyes works on leadership development for mid-market manufacturers. By Reyes's account, one plant's frontline turnover fell by half within a year of the program. The executives Reyes serves are being asked to hold a team together while the people who hold the floor keep leaving.</div>
+      <div class="reveal"><b>You read every word of that. It was about you.</b> That pull is what the Reverse Spotlight runs on. Day 2 shows what happens when the same attention is pointed at the organization you most want to reach.</div>
+    </div>
+
+    <div class="panel">
+      <h3>Your score</h3>
+      <div style="display:flex;align-items:baseline;gap:10px"><span class="big" id="fScore">17</span><span style="color:var(--mut)">out of 50</span></div>
+      <div class="scorebars" style="margin-top:10px">
+        <div class="sb"><span class="t">Predictability</span><span class="track"><i id="sb0" style="width:40%"></i></span></div>
+        <div class="sb"><span class="t">Access to deciders</span><span class="track"><i id="sb1" style="width:30%"></i></span></div>
+        <div class="sb"><span class="t">Inbound vs outbound</span><span class="track"><i id="sb2" style="width:20%"></i></span></div>
+        <div class="sb"><span class="t">What your book converts</span><span class="track"><i id="sb3" style="width:50%"></i></span></div>
+        <div class="sb"><span class="t">Time spent being seen</span><span class="track"><i id="sb4" style="width:30%"></i></span></div>
+      </div>
+      <div class="band" style="margin-top:12px" id="fBand">You are who this event was built for. Take notes tomorrow.</div>
+    </div>
+
+    <div class="panel">
+      <h3>One relationship, year one</h3>
+      <div class="big" id="fV">$170,000</div>
+      <div style="color:var(--mut);font-size:15px" id="fVlabel">A 6-figure opportunity, from your own numbers.</div>
+    </div>
+
+    <div class="panel">
+      <h3>Left on the table</h3>
+      <p style="margin:2px 0"><span class="big" id="fLeft">$1,020,000</span></p>
+      <div style="font-size:15px;color:var(--ink)" id="fLeftTxt">So far, across 6 years of waiting. That is about <b>$14,167</b> every month, available and never collected. One more year of waiting makes it $1,190,000.</div>
+    </div>
+
+    <div class="panel span">
+      <h3>Part 1: your Target Map</h3>
+      <div style="font-size:15px;color:var(--mut);margin-bottom:4px">3 organizations that already gather the people you serve, and that bring in outside speakers and consultants.</div>
+      <div id="orgwrap"></div>
+    </div>
+
+    <div class="panel locked">
+      <h3>Part 2: the gatekeepers</h3>
+      <div class="lockrow">&#128274; On Day 2: the person inside each organization who controls speaking and training, with how to reach them.</div>
+    </div>
+    <div class="panel locked">
+      <h3>Parts 3, 4, 5: Asset Stack, Delivery, Relationship Engine</h3>
+      <div class="lockrow">&#128274; Named and unlocked live on Day 2.</div>
+    </div>
+
+    <div class="panel">
+      <h3>Your gap</h3>
+      <div class="gap" id="fGap"><b>4 tries. 1 reply.</b> Bring that to Day 2.</div>
+    </div>
+
+    </div>
+
+    <div class="d2 span">
+      <div class="line">On Day 2 we'll expand this and show you how to turn 100 gatekeepers into advocates.</div>
+      <div class="when">Day 2 starts 1:00 PM ET, Tuesday Nov 17.</div>
+      <a href="#" id="d2confirm" onclick="confirmD2(event)">Confirm I'll be at Day 2</a>
+      <div id="d2done" style="display:none">
+        <div class="when" style="opacity:1;margin-top:12px">You're set for Day 2. Your File is saved.</div>
+        <a href="#" onclick="downloadPDF(event)">Download your File (PDF)</a>
+      </div>
+    </div>
+
+    <div class="foot">
+      The dollar figures in this File are your own estimates. They are not a projection or a promise of income.<br>
+      Organizations are shown as examples from public sources. No relationship with them or endorsement by them is implied.
+    </div>
+  </section>
+</div>
+  <div id="srcModal" class="modal" onclick="if(event.target===this)hideSrc()">
+    <div class="modalbox">
+      <div class="modalhdr"><span>Source</span><button class="x" onclick="hideSrc()">&times;</button></div>
+      <p class="modalphrase" id="srcPhrase"></p>
+      <p class="modalurl" id="srcUrl"></p>
+      <a class="modalopen" id="srcOpen" href="#" target="_blank" rel="noopener">Open the page in a new tab</a>
+    </div>
+  </div>
+
+<script>
+
+  function $(id){return document.getElementById(id);}
+  function val(id){var e=$(id);return e?e.value:'';}
+  function num(id){return +(val(id))||0;}
+  function fmt(n){return '$'+Math.round(n).toLocaleString();}
+  function labelLine(V){
+    if(V>=1000000)return 'A 7-figure opportunity, from your own numbers.';
+    if(V>=100000)return 'A 6-figure opportunity, from your own numbers.';
+    if(V>=10000)return 'A 5-figure opportunity, from your own numbers.';
+    return 'From your own numbers.';
+  }
+  function bandText(t){
+    if(t>=40)return 'You scored high. So why did you clear two days for this? Hold that for Day 2.';
+    if(t>=25)return 'Hold this number. Do not fix it and do not defend it. Day 2 shows what moves it.';
+    return 'You are who this event was built for. Take notes tomorrow.';
+  }
+  function showSrc(e,url,phrase){e.preventDefault();
+    $('srcPhrase').textContent=phrase;$('srcUrl').textContent=url;$('srcOpen').href=url;
+    $('srcModal').classList.add('on');}
+  function hideSrc(){$('srcModal').classList.remove('on');}
+  function confirmD2(e){e.preventDefault();$('d2confirm').style.display='none';$('d2done').style.display='block';}
+  function downloadPDF(e){e.preventDefault();window.print();}
+  function populate(){
+    var fn=val('fn').trim(),ln=val('ln').trim();
+    var V=num('m1')+num('m2')+num('m3'), yrs=num('yrs');
+    var tot=start.reduce(function(a,b){return a+b;},0);
+    $('fName').textContent=(fn+' '+ln).trim()||'Your File';
+    var topic=val('t_topic').trim()||'your topic', aud=val('t_aud').trim()||'the people you serve', res=val('t_res').trim();
+    var sp=((fn+' '+ln).trim()||'You')+' work'+(fn?'s':'')+' on '+topic+' for '+aud+'.';
+    if(res){sp+=' By '+(ln||'your')+"'s account, "+res.charAt(0).toLowerCase()+res.slice(1)+(/[.!?]$/.test(res)?'':'.');}
+    sp+=' The people '+(ln||'you')+' serve'+(ln?'s':'')+' are deciding who to trust on this, and most of the field is still asking for attention instead of giving it.';
+    $('fSpot').textContent=sp;
+    $('fScore').textContent=tot;
+    for(var i=0;i<5;i++){$('sb'+i).style.width=(start[i]*10)+'%';}
+    $('fBand').textContent=bandText(tot);
+    $('fV').textContent=fmt(V);
+    $('fVlabel').textContent=labelLine(V);
+    var left=V*yrs, perMo=V/12, next=V*(yrs+1);
+    $('fLeft').textContent=fmt(left);
+    $('fLeftTxt').innerHTML='So far, across '+yrs+' year'+(yrs===1?'':'s')+' of waiting. That is about <b>'+fmt(perMo)+'</b> every month, available and never collected. One more year of waiting makes it '+fmt(next)+'.';
+    var tr=num('t_try'), rp=num('t_rep');
+    $('fGap').innerHTML='<b>'+tr+' tries. '+rp+' repl'+(rp===1?'y':'ies')+'.</b> Bring that to Day 2.';
+  }
+
+  var dims=[
+    ["Predictability of your next six months","Cannot tell where the next one comes from","A decent guess","Name the next three now"],
+    ["Access to the people who decide","Do not know who controls it","Know the title","Know the person, they know you"],
+    ["Inbound versus outbound","You go get every one","Half and half","The good ones come to you"],
+    ["What your book and expertise convert","Compliments, no invoice","A few real conversations","Reliably opens doors"],
+    ["How much of your week goes to being seen","Most of it","A real chunk","Almost none"]
+  ];
+  var start=[4,3,2,5,3];
+  var box=document.getElementById('sliders');
+  dims.forEach(function(d,i){
+    var w=document.createElement('div'); w.className='slider';
+    w.innerHTML='<div class="top"><span>'+d[0]+'</span><span class="val" id="v'+i+'">'+start[i]+'</span></div>'+
+      '<input type="range" min="1" max="10" value="'+start[i]+'" oninput="sc('+i+',this.value)">'+
+      '<div class="bar3"><span>1 '+d[1]+'</span><span>10 '+d[3]+'</span></div>';
+    box.appendChild(w);
+  });
+  function sc(i,v){document.getElementById('v'+i).textContent=v;start[i]=+v;score();}
+  function score(){
+    var t=start.reduce(function(a,b){return a+b;},0);
+    document.getElementById('scoreT').textContent=t;
+    var b=document.getElementById('band');
+    if(t>=40)b.textContent='You scored high. So why did you clear two days for this? Hold that for Day 2.';
+    else if(t>=25)b.textContent='Hold this number. Do not fix it and do not defend it. Day 2 shows what moves it.';
+    else b.textContent='You are who this event was built for. Take notes tomorrow.';
+  }
+  function money(){
+    var v=(+m1.value||0)+(+m2.value||0)+(+m3.value||0);
+    document.getElementById('vTot').textContent='$'+v.toLocaleString();
+  }
+  function go(id,p){
+    document.querySelectorAll('.screen').forEach(function(s){s.classList.remove('on');});
+    document.getElementById(id).classList.add('on');
+    window.scrollTo(0,0);
+    if(id==='s2')score();
+  }
+  var msgs=["Reading your topic...","Finding organizations that gather your buyers...","Checking member counts against published figures...","Confirming they hire outside speakers...","Writing your File..."];
+  function build(){
+    go('s5'); var i=0; var bar=document.getElementById('bbar'); var m=document.getElementById('buildMsg');
+    var t=setInterval(function(){
+      i++; m.textContent=msgs[Math.min(i,msgs.length-1)]; bar.style.width=Math.min(10+i*20,100)+'%';
+      if(i>=5){clearInterval(t);setTimeout(function(){populate();go('file');},500);}
+    },700);
+  }
+  money();
+</script>
+
+<script>
+
+  var FN = 'https://ugggowcmigbwziwxejyq.supabase.co/functions/v1/ra';
+  var ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InVnZ2dvd2NtaWdid3ppd3hlanlxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTQ0NDM3ODMsImV4cCI6MjExMDAxOTc4M30.w6WRnK7TaILLplZ6m-7Y3ZNfL-ElYJ7Da5NhKMp9q-s';
+  function api(action, opts){ opts=opts||{}; opts.headers=Object.assign({'apikey':ANON,'Authorization':'Bearer '+ANON}, opts.headers||{});
+    return fetch(FN+'?action='+action+(opts.q?('&'+opts.q):''), opts); }
+
+  var RA = { token: null };
+  function qs(){var m=location.search.match(/[?&]token=([a-f0-9]+)/);return m?m[1]:null;}
+  async function openFile(){
+    var btn=document.getElementById('openBtn'), err=document.getElementById('openErr'); err.style.display='none';
+    var email=(val('email')||'').trim();
+    if(!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)){ err.textContent='Please enter a valid email.'; err.style.display='block'; return; }
+    if(!document.getElementById('consent').checked){ err.textContent='Please agree before continuing.'; err.style.display='block'; return; }
+    var seg=(document.querySelector('input[name=seg]:checked')||{}).value||'';
+    btn.disabled=true; btn.textContent='Opening...';
+    try{
+      var r=await api('open',{method:'POST',headers:{'Content-Type':'application/json'},
+        body:JSON.stringify({first_name:val('fn'),last_name:val('ln'),email:email,linkedin_url:val('li'),segment:seg,consent:true})});
+      var j=await r.json(); if(!r.ok) throw new Error(j.error||'Could not open your File.');
+      RA.token=j.token; go('s2',25);
+    }catch(e){ err.textContent=String(e.message); err.style.display='block'; }
+    finally{ btn.disabled=false; btn.textContent='Open my File'; }
+  }
+  var msgs=["Reading your topic...","Finding organizations that gather your buyers...","Checking member counts against published figures...","Confirming they hire outside speakers...","Writing your File..."];
+  async function build(){
+    go('s5'); var i=0,bar=document.getElementById('bbar'),m=document.getElementById('buildMsg');
+    var anim=setInterval(function(){ i++; m.textContent=msgs[Math.min(i,msgs.length-1)]; bar.style.width=Math.min(15+i*16,95)+'%'; },1400);
+    var payload={ token:RA.token, scores:start.slice(),
+      val_speaking:num('m1'),val_training:num('m2'),val_advisory:num('m3'),years_waiting:num('yrs'),
+      topic:val('t_topic'),audience:val('t_aud'),proud_result:val('t_res'),dream_org:val('t_dream'),
+      attempts:num('t_try'),replies:num('t_rep') };
+    try{
+      var r=await api('build',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)});
+      var f=await r.json(); if(!r.ok) throw new Error(f.error||'Build failed');
+      clearInterval(anim); bar.style.width='100%'; renderServer(f); setTimeout(function(){ go('file'); },350);
+    }catch(e){ clearInterval(anim); m.textContent='Something went wrong. Please try Build again.'; }
+  }
+  function esc(x){return (x==null?'':String(x)).replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];});}
+  function orgCard(o){
+    var mem = o.members ? ('Members: '+esc(o.members)+(o.member_unit?' '+esc(o.member_unit):'')) : 'Member count not published';
+    var memSrc = o.member_src ? ' <a class="src" href="#" onclick="showSrc(event,\''+esc(o.member_src)+'\',\''+esc(o.member_phrase||'')+'\')">source</a>' : '';
+    var evSrc = o.evidence_src ? ' <a class="src" href="#" onclick="showSrc(event,\''+esc(o.evidence_src)+'\',\''+esc(o.evidence_phrase||'')+'\')">source</a>' : '';
+    return '<div class="org"><div class="n">'+esc(o.name)+'</div>'+
+      (o.website?'<div class="w">'+esc(o.website)+'</div>':'')+
+      '<div class="m">'+mem+memSrc+'</div>'+
+      (o.evidence?'<div class="ev"><b>Hires outside experts:</b> '+esc(o.evidence)+evSrc+'</div>':'')+
+      (o.why?'<div style="font-size:14px;color:var(--ink);margin-top:8px">'+esc(o.why)+'</div>':'')+'</div>';
+  }
+  function renderServer(f){
+    $('fName').textContent=f.name||'Your File';
+    $('fSpot').textContent=f.spotlight||'';
+    $('fScore').textContent=f.score_total||0;
+    for(var i=0;i<5;i++){ $('sb'+i).style.width=(((f.scores&&f.scores[i])||0)*10)+'%'; }
+    $('fBand').textContent=bandText(f.score_total||0);
+    $('fV').textContent=f.value_money; $('fVlabel').textContent=f.value_label;
+    $('fLeft').textContent=f.left_money;
+    $('fLeftTxt').innerHTML='So far, across '+f.years+' year'+(f.years===1?'':'s')+' of waiting. That is about <b>'+f.monthly_money+'</b> every month, available and never collected. One more year of waiting makes it '+f.next_year_money+'.';
+    var tr=num('t_try'),rp=num('t_rep');
+    $('fGap').innerHTML='<b>'+tr+' tries. '+rp+' repl'+(rp===1?'y':'ies')+'.</b> Bring that to Day 2.';
+    var ow=$('orgwrap');
+    if(f.orgs&&f.orgs.length){ ow.innerHTML=f.orgs.map(orgCard).join(''); }
+    else { ow.innerHTML='<div class="ev" style="background:var(--lock)">This panel is being researched. You will get an email when it is ready.</div>'; }
+    if(f.confirmed){ var c=$('d2confirm'); if(c)c.style.display='none'; var d=$('d2done'); if(d)d.style.display='block'; }
+  }
+  async function confirmD2(e){ e.preventDefault();
+    try{ await api('confirm',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({token:RA.token})}); }catch(_){}
+    $('d2confirm').style.display='none'; $('d2done').style.display='block';
+  }
+  (async function(){ var t=qs(); if(!t) return; RA.token=t;
+    try{ var r=await api('file',{q:'token='+t}); var f=await r.json();
+      if(r.ok && f && f.value_money){ renderServer(f); go('file'); } }catch(_){}
+  })();
+</script>
+
+</body>
+</html>
