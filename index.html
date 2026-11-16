@@ -170,8 +170,6 @@
         <div class="f"><label>Consulting</label><input type="number" id="m3" value="0" oninput="money()"></div>
       </div>
       <div class="total"><span>One client, year one</span><b id="vTot">$0</b></div>
-      <label>How many years have you meant to land accounts like this?</label>
-      <input type="number" id="yrs" value="0" oninput="money()">
     </div></div>
   </section>
 
@@ -190,10 +188,6 @@
       <textarea id="t_res" placeholder="One result you are proud of"></textarea>
       <label>Dream organization (optional)</label>
       <input type="text" id="t_dream" placeholder="Leave blank if you are not sure">
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
-        <div><label>Decision-makers you tried to reach (last 12 mo.)</label><input type="number" id="t_try" value="0"></div>
-        <div><label>How many replied</label><input type="number" id="t_rep" value="0"></div>
-      </div>
     </div></div>
   </section>
 
@@ -235,25 +229,18 @@
 
     <div class="panel">
       <h3>Channel Partner Distribution Estimate</h3>
-      <div class="big" id="fV">$0</div>
-      <div style="color:var(--mut);font-size:15px" id="fVlabel"></div>
-      <div style="margin-top:14px">
-        <label style="display:block;font-size:14px;color:var(--ink);margin-bottom:4px">Members in this channel partner</label>
-        <input type="number" id="fBase" inputmode="numeric" min="0" step="100" placeholder="Type your partner's size" oninput="setBase(this.value)">
-      </div>
+      <label style="display:block;font-size:14px;color:var(--ink);margin-bottom:4px">Members in this channel partner</label>
+      <input type="number" id="fBase" inputmode="numeric" min="0" step="100" placeholder="Type your partner's size" oninput="setBase(this.value)">
       <div class="slider" style="margin-top:14px">
-        <div class="top"><span>Likely ICP buyers inside your channel partner</span><span class="val" id="penV">5%</span></div>
-        <input type="range" min="1" max="20" value="5" oninput="setPen(this.value)">
-        <div class="bar3"><span>1%</span><span>20%</span></div>
+        <div class="top"><span>Likely ICP buyers inside your channel partner</span><span class="val" id="penV">2%</span></div>
+        <input type="range" min="1" max="5" value="2" oninput="setPen(this.value)">
+        <div class="bar3"><span>1%</span><span>5%</span></div>
       </div>
+      <div class="big" id="fV" style="margin-top:14px">$0</div>
+      <div style="color:var(--mut);font-size:15px" id="fVlabel"></div>
       <div style="font-size:14px;color:var(--ink);margin-top:2px" id="fVmath"></div>
       <div class="mult" id="fVmult"></div>
-    </div>
-
-    <div class="panel">
-      <h3>Left on the table</h3>
-      <p style="margin:2px 0"><span class="big" id="fLeft">$1,020,000</span></p>
-      <div style="font-size:15px;color:var(--ink)" id="fLeftTxt">So far, across 6 years of waiting. That is about <b>$14,167</b> every month, available and never collected. One more year of waiting makes it $1,190,000.</div>
+      <div style="font-size:15px;color:var(--ink);margin-top:10px" id="fVmonth"></div>
     </div>
 
     <div class="panel span">
@@ -269,11 +256,6 @@
     <div class="panel locked">
       <h3>Parts 3, 4, 5: Asset Stack, Delivery, Relationship Engine</h3>
       <div class="lockrow">&#128274; Named and unlocked live on Day 2.</div>
-    </div>
-
-    <div class="panel">
-      <h3>Your gap</h3>
-      <div class="gap" id="fGap"><b>4 tries. 1 reply.</b> Bring that to Day 2.</div>
     </div>
 
     </div>
@@ -401,7 +383,7 @@
   function api(action, opts){ opts=opts||{}; opts.headers=Object.assign({'apikey':ANON,'Authorization':'Bearer '+ANON}, opts.headers||{});
     return fetch(FN+'?action='+action+(opts.q?('&'+opts.q):''), opts); }
 
-  var RA = { token:null, pen:5, research:null, researchedKey:'', userBase:null, baseAuto:true };
+  var RA = { token:null, pen:2, research:null, researchedKey:'', userBase:null, baseAuto:true };
   function qs(){var m=location.search.match(/[?&]token=([a-f0-9]+)/);return m?m[1]:null;}
   async function openFile(){
     var btn=document.getElementById('openBtn'), err=document.getElementById('openErr'); err.style.display='none';
@@ -455,21 +437,19 @@
     renderMoney();
   }
   function renderMoney(){
-    var V=num('m1')+num('m2')+num('m3'), yrs=num('yrs');
+    var V=num('m1')+num('m2')+num('m3');
     var usingUser=!!(RA.userBase&&RA.userBase>0);
     var usingResearch=!usingUser&&!!(RA.research&&RA.research.base>0);
     var base=usingUser?RA.userBase:(usingResearch?RA.research.base:1000);
     var estimated=!usingUser&&!usingResearch;
     var baseOrg=usingResearch?((RA.research&&RA.research.baseOrg)||''):'';
-    var pen=RA.pen||5, buyers=Math.max(1,Math.round(base*pen/100)), revenue=V*buyers;
+    var pen=RA.pen||2, buyers=Math.max(1,Math.round(base*pen/100)), revenue=V*buyers;
     $('fV').textContent=fmt(revenue);
     $('fVlabel').textContent=labelLine(revenue);
     var baseTxt=estimated?('about '+base.toLocaleString()+' members (estimate, set your partner size above)'):(baseOrg?(baseOrg+', about '+base.toLocaleString()+' members'):('about '+base.toLocaleString()+' members'));
-    $('fVmath').innerHTML='Based on '+baseTxt+'. At '+pen+'%, that is <b>'+buyers.toLocaleString()+'</b> buyers at '+fmt(V)+' each.';
+    $('fVmath').innerHTML='Based on '+baseTxt+'. At '+pen+'%, that is <b>'+buyers.toLocaleString()+'</b> buyers at '+fmt(V)+' each, in one year.';
     $('fVmult').textContent='About '+buyers.toLocaleString()+'x a single client.';
-    var left=revenue*yrs, perMo=revenue/12, next=revenue*(yrs+1);
-    $('fLeft').textContent=fmt(left);
-    $('fLeftTxt').innerHTML='So far, across '+yrs+' year'+(yrs===1?'':'s')+' of waiting. That is about <b>'+fmt(perMo)+'</b> every month, available and never collected. One more year of waiting makes it '+fmt(next)+'.';
+    $('fVmonth').innerHTML='About <b>'+fmt(revenue/12)+'</b> a month from one partner, sitting on the table while you stay one to one.';
   }
   function renderFile(){
     var fn=val('fn').trim(), ln=val('ln').trim(), full=(fn+' '+ln).trim();
@@ -488,8 +468,6 @@
     renderMoney();
     var ow=$('orgwrap'), orgs=(RA.research&&RA.research.orgs)||[];
     ow.innerHTML=orgs.length?orgs.map(orgCard).join(''):'<div class="ev" style="background:var(--lock)">Your Target Map is being finalized.</div>';
-    var tr=num('t_try'), rp=num('t_rep');
-    $('fGap').innerHTML='<b>'+tr+' tries. '+rp+' repl'+(rp===1?'y':'ies')+'.</b> Bring that to Day 2.';
   }
   function esc(x){return (x==null?'':String(x)).replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];});}
   function orgCard(o){
