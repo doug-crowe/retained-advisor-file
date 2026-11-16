@@ -38,6 +38,12 @@
     padding:14px;font-size:18px;font-weight:600;margin-top:18px;cursor:pointer}
   .btn:disabled{background:#B9D9BC;cursor:not-allowed}
   .btn.ghost{background:#fff;color:var(--gd);border:1px solid var(--g);margin-top:10px}
+  .nav{display:flex;gap:10px;margin-bottom:14px}
+  .nav .navbtn{border-radius:9px;padding:11px 14px;font-size:16px;font-weight:600;cursor:pointer}
+  .nav .back{background:#fff;color:var(--gd);border:1px solid var(--g);flex:0 0 38%}
+  .nav .next{background:var(--g);color:#fff;border:0;flex:1}
+  .mult{display:inline-block;background:var(--tint);color:var(--gd);font-weight:700;
+    border-radius:20px;padding:4px 12px;font-size:14px;margin-top:10px}
   .prog{height:5px;background:#E8EDE8;border-radius:4px;margin:2px 0 16px;overflow:hidden}
   .prog i{display:block;height:100%;background:var(--g);transition:width .3s}
   .slider{margin:16px 0}
@@ -142,13 +148,12 @@
   <section class="screen" id="s2"><div class="stepwrap">
     <div class="prog"><i style="width:25%"></i></div>
     <div class="card">
+      <div class="nav"><button class="navbtn back" onclick="go('s1')">&#8592; Back</button><button class="navbtn next" onclick="go('s3',50)">Next &#8594;</button></div>
       <h2 class="serif">Score yourself</h2>
       <p class="sub">One to ten on each. Be honest, not generous.</p>
       <div id="sliders"></div>
       <div class="total"><span>Your score, out of 50</span><b id="scoreT">0</b></div>
       <div class="band" id="band"></div>
-      <button class="btn" onclick="go('s3',50)">Next</button>
-      <button class="btn ghost" onclick="go('s1')">Back</button>
     </div></div>
   </section>
 
@@ -156,18 +161,17 @@
   <section class="screen" id="s3"><div class="stepwrap">
     <div class="prog"><i style="width:50%"></i></div>
     <div class="card">
-      <h2 class="serif">One dream relationship, year one</h2>
-      <p class="sub">What would one relationship with the organization you most want be worth in the first year? Your numbers.</p>
+      <div class="nav"><button class="navbtn back" onclick="go('s2',25)">&#8592; Back</button><button class="navbtn next" onclick="go('s4',75)">Next &#8594;</button></div>
+      <h2 class="serif">What one client is worth</h2>
+      <p class="sub"><b>Your price for a single client.</b> One person or one company, not a channel partner. What you charge each:</p>
       <div class="money">
         <div class="f"><label>Speaking</label><input type="number" id="m1" value="0" oninput="money()"></div>
-        <div class="f"><label>Training</label><input type="number" id="m2" value="0" oninput="money()"></div>
-        <div class="f"><label>Advisory</label><input type="number" id="m3" value="0" oninput="money()"></div>
+        <div class="f"><label>Workshop</label><input type="number" id="m2" value="0" oninput="money()"></div>
+        <div class="f"><label>Consulting</label><input type="number" id="m3" value="0" oninput="money()"></div>
       </div>
-      <div class="total"><span>Year one value</span><b id="vTot">$0</b></div>
+      <div class="total"><span>One client, year one</span><b id="vTot">$0</b></div>
       <label>How many years have you meant to land accounts like this?</label>
       <input type="number" id="yrs" value="0" oninput="money()">
-      <button class="btn" onclick="go('s4',75)">Next</button>
-      <button class="btn ghost" onclick="go('s2',25)">Back</button>
     </div></div>
   </section>
 
@@ -175,6 +179,7 @@
   <section class="screen" id="s4"><div class="stepwrap">
     <div class="prog"><i style="width:75%"></i></div>
     <div class="card">
+      <div class="nav"><button class="navbtn back" onclick="go('s3',50)">&#8592; Back</button><button class="navbtn next" onclick="build()">Build my File &#8594;</button></div>
       <h2 class="serif">Your topic</h2>
       <p class="sub">This is what we research into 3 organizations that gather the people you serve.</p>
       <label>Your speaking or consulting topic</label>
@@ -189,8 +194,6 @@
         <div><label>Decision-makers you tried to reach (last 12 mo.)</label><input type="number" id="t_try" value="0"></div>
         <div><label>How many replied</label><input type="number" id="t_rep" value="0"></div>
       </div>
-      <button class="btn" onclick="build()">Build my File</button>
-      <button class="btn ghost" onclick="go('s3',50)">Back</button>
     </div></div>
   </section>
 
@@ -231,9 +234,16 @@
     </div>
 
     <div class="panel">
-      <h3>One relationship, year one</h3>
-      <div class="big" id="fV">$170,000</div>
-      <div style="color:var(--mut);font-size:15px" id="fVlabel">A 6-figure opportunity, from your own numbers.</div>
+      <h3>Channel Partner Distribution Estimate</h3>
+      <div class="big" id="fV">$0</div>
+      <div style="color:var(--mut);font-size:15px" id="fVlabel"></div>
+      <div class="slider" style="margin-top:14px">
+        <div class="top"><span>Likely ICP buyers inside your channel partner</span><span class="val" id="penV">5%</span></div>
+        <input type="range" min="1" max="20" value="5" oninput="setPen(this.value)">
+        <div class="bar3"><span>1%</span><span>20%</span></div>
+      </div>
+      <div style="font-size:14px;color:var(--ink);margin-top:2px" id="fVmath"></div>
+      <div class="mult" id="fVmult"></div>
     </div>
 
     <div class="panel">
@@ -387,7 +397,7 @@
   function api(action, opts){ opts=opts||{}; opts.headers=Object.assign({'apikey':ANON,'Authorization':'Bearer '+ANON}, opts.headers||{});
     return fetch(FN+'?action='+action+(opts.q?('&'+opts.q):''), opts); }
 
-  var RA = { token: null };
+  var RA = { token:null, pen:5, research:null, researchedKey:'' };
   function qs(){var m=location.search.match(/[?&]token=([a-f0-9]+)/);return m?m[1]:null;}
   async function openFile(){
     var btn=document.getElementById('openBtn'), err=document.getElementById('openErr'); err.style.display='none';
@@ -404,7 +414,9 @@
     finally{ btn.disabled=false; btn.textContent='Open my File'; }
   }
   var msgs=["Reading your topic...","Finding organizations that gather your buyers...","Checking member counts against published figures...","Confirming they hire outside speakers...","Writing your File..."];
+  function icpKey(){ return (val('t_topic')||'').trim().toLowerCase()+'|'+(val('t_aud')||'').trim().toLowerCase(); }
   async function build(){
+    if(RA.research && RA.researchedKey===icpKey()){ renderFile(); go('file'); return; }
     go('s5'); var i=0,bar=document.getElementById('bbar'),m=document.getElementById('buildMsg');
     var anim=setInterval(function(){ i++; m.textContent=msgs[Math.min(i,msgs.length-1)]; bar.style.width=Math.min(15+i*16,95)+'%'; },1400);
     var payload={ token:RA.token, scores:start.slice(),
@@ -414,8 +426,55 @@
     try{
       var r=await api('build',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)});
       var f=await r.json(); if(!r.ok) throw new Error(f.error||'Build failed');
-      clearInterval(anim); bar.style.width='100%'; renderServer(f); setTimeout(function(){ go('file'); },350);
+      var cb=computeBase(f.orgs||[]);
+      RA.research={ orgs:(f.orgs||[]), base:cb.base, baseOrg:cb.org };
+      RA.researchedKey=icpKey();
+      clearInterval(anim); bar.style.width='100%'; renderFile(); setTimeout(function(){ go('file'); },350);
     }catch(e){ clearInterval(anim); m.textContent='Something went wrong. Please try Build again.'; }
+  }
+  function parseMembers(s){
+    if(!s) return 0; var str=String(s).toLowerCase();
+    var m=str.match(/([\d][\d,\.]*)\s*(million|thousand|k)?/);
+    if(!m) return 0; var n=parseFloat(m[1].replace(/,/g,'')); if(isNaN(n)) return 0;
+    var u=m[2]||''; if(u==='million') n*=1000000; else if(u==='thousand'||u==='k') n*=1000;
+    return Math.round(n);
+  }
+  function computeBase(orgs){
+    var best=0, org=''; (orgs||[]).forEach(function(o){ var n=parseMembers(o.members); if(n>best){best=n;org=o.name;} });
+    return { base:best, org:org };
+  }
+  function setPen(v){ RA.pen=+v||1; document.getElementById('penV').textContent=RA.pen+'%'; renderMoney(); }
+  function renderMoney(){
+    var V=num('m1')+num('m2')+num('m3'), yrs=num('yrs');
+    var base=(RA.research&&RA.research.base)||0, baseOrg=(RA.research&&RA.research.baseOrg)||'', estimated=false;
+    if(!base){ base=1000; estimated=true; }
+    var pen=RA.pen||5, buyers=Math.max(1,Math.round(base*pen/100)), revenue=V*buyers;
+    $('fV').textContent=fmt(revenue);
+    $('fVlabel').textContent=labelLine(revenue);
+    var baseTxt=estimated?('a channel partner of about '+base.toLocaleString()+' members (estimate you can refine)'):(baseOrg?(baseOrg+', about '+base.toLocaleString()+' members'):('about '+base.toLocaleString()+' members'));
+    $('fVmath').innerHTML='Based on '+baseTxt+'. At '+pen+'%, that is <b>'+buyers.toLocaleString()+'</b> buyers at '+fmt(V)+' each.';
+    $('fVmult').textContent='About '+buyers.toLocaleString()+'x a single client.';
+    var left=revenue*yrs, perMo=revenue/12, next=revenue*(yrs+1);
+    $('fLeft').textContent=fmt(left);
+    $('fLeftTxt').innerHTML='So far, across '+yrs+' year'+(yrs===1?'':'s')+' of waiting. That is about <b>'+fmt(perMo)+'</b> every month, available and never collected. One more year of waiting makes it '+fmt(next)+'.';
+  }
+  function renderFile(){
+    var fn=val('fn').trim(), ln=val('ln').trim(), full=(fn+' '+ln).trim();
+    $('fName').textContent=full||'Your File';
+    var topic=val('t_topic').trim()||'your topic', aud=val('t_aud').trim()||'the people you serve', res=val('t_res').trim();
+    var sp=(full||'You')+' work'+(fn?'s':'')+' on '+topic+' for '+aud+'.';
+    if(res){ sp+=' By '+(ln||'your')+"'s account, "+res.charAt(0).toLowerCase()+res.slice(1)+(/[.!?]$/.test(res)?'':'.'); }
+    sp+=' The people '+(ln||'you')+' serve'+(ln?'s':'')+' are deciding who to trust on this, and most of the field is still asking for attention instead of giving it.';
+    $('fSpot').textContent=sp;
+    var tot=start.reduce(function(a,b){return a+b;},0);
+    $('fScore').textContent=tot;
+    for(var i=0;i<5;i++){ $('sb'+i).style.width=(start[i]*10)+'%'; }
+    $('fBand').textContent=bandText(tot);
+    renderMoney();
+    var ow=$('orgwrap'), orgs=(RA.research&&RA.research.orgs)||[];
+    ow.innerHTML=orgs.length?orgs.map(orgCard).join(''):'<div class="ev" style="background:var(--lock)">Your Target Map is being finalized.</div>';
+    var tr=num('t_try'), rp=num('t_rep');
+    $('fGap').innerHTML='<b>'+tr+' tries. '+rp+' repl'+(rp===1?'y':'ies')+'.</b> Bring that to Day 2.';
   }
   function esc(x){return (x==null?'':String(x)).replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];});}
   function orgCard(o){
@@ -428,30 +487,10 @@
       (o.evidence?'<div class="ev"><b>Hires outside experts:</b> '+esc(o.evidence)+evSrc+'</div>':'')+
       (o.why?'<div style="font-size:14px;color:var(--ink);margin-top:8px">'+esc(o.why)+'</div>':'')+'</div>';
   }
-  function renderServer(f){
-    $('fName').textContent=f.name||'Your File';
-    $('fSpot').textContent=f.spotlight||'';
-    $('fScore').textContent=f.score_total||0;
-    for(var i=0;i<5;i++){ $('sb'+i).style.width=(((f.scores&&f.scores[i])||0)*10)+'%'; }
-    $('fBand').textContent=bandText(f.score_total||0);
-    $('fV').textContent=f.value_money; $('fVlabel').textContent=f.value_label;
-    $('fLeft').textContent=f.left_money;
-    $('fLeftTxt').innerHTML='So far, across '+f.years+' year'+(f.years===1?'':'s')+' of waiting. That is about <b>'+f.monthly_money+'</b> every month, available and never collected. One more year of waiting makes it '+f.next_year_money+'.';
-    var tr=num('t_try'),rp=num('t_rep');
-    $('fGap').innerHTML='<b>'+tr+' tries. '+rp+' repl'+(rp===1?'y':'ies')+'.</b> Bring that to Day 2.';
-    var ow=$('orgwrap');
-    if(f.orgs&&f.orgs.length){ ow.innerHTML=f.orgs.map(orgCard).join(''); }
-    else { ow.innerHTML='<div class="ev" style="background:var(--lock)">This panel is being researched. You will get an email when it is ready.</div>'; }
-    if(f.confirmed){ var c=$('d2confirm'); if(c)c.style.display='none'; var d=$('d2done'); if(d)d.style.display='block'; }
-  }
   async function confirmD2(e){ e.preventDefault();
     try{ await api('confirm',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({token:RA.token})}); }catch(_){}
     $('d2confirm').style.display='none'; $('d2done').style.display='block';
   }
-  (async function(){ var t=qs(); if(!t) return; RA.token=t;
-    try{ var r=await api('file',{q:'token='+t}); var f=await r.json();
-      if(r.ok && f && f.value_money){ renderServer(f); go('file'); } }catch(_){}
-  })();
 </script>
 
 </body>
