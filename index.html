@@ -237,6 +237,10 @@
       <h3>Channel Partner Distribution Estimate</h3>
       <div class="big" id="fV">$0</div>
       <div style="color:var(--mut);font-size:15px" id="fVlabel"></div>
+      <div style="margin-top:14px">
+        <label style="display:block;font-size:14px;color:var(--ink);margin-bottom:4px">Members in this channel partner</label>
+        <input type="number" id="fBase" inputmode="numeric" min="0" step="100" placeholder="Type your partner's size" oninput="setBase(this.value)">
+      </div>
       <div class="slider" style="margin-top:14px">
         <div class="top"><span>Likely ICP buyers inside your channel partner</span><span class="val" id="penV">5%</span></div>
         <input type="range" min="1" max="20" value="5" oninput="setPen(this.value)">
@@ -397,7 +401,7 @@
   function api(action, opts){ opts=opts||{}; opts.headers=Object.assign({'apikey':ANON,'Authorization':'Bearer '+ANON}, opts.headers||{});
     return fetch(FN+'?action='+action+(opts.q?('&'+opts.q):''), opts); }
 
-  var RA = { token:null, pen:5, research:null, researchedKey:'' };
+  var RA = { token:null, pen:5, research:null, researchedKey:'', userBase:null, baseAuto:true };
   function qs(){var m=location.search.match(/[?&]token=([a-f0-9]+)/);return m?m[1]:null;}
   async function openFile(){
     var btn=document.getElementById('openBtn'), err=document.getElementById('openErr'); err.style.display='none';
@@ -444,14 +448,23 @@
     return { base:best, org:org };
   }
   function setPen(v){ RA.pen=+v||1; document.getElementById('penV').textContent=RA.pen+'%'; renderMoney(); }
+  function setBase(v){
+    var n=parseInt(String(v).replace(/[^\d]/g,''),10);
+    if(isNaN(n)){ RA.userBase=null; RA.baseAuto=true; }
+    else { RA.userBase=Math.max(0,n); RA.baseAuto=false; }
+    renderMoney();
+  }
   function renderMoney(){
     var V=num('m1')+num('m2')+num('m3'), yrs=num('yrs');
-    var base=(RA.research&&RA.research.base)||0, baseOrg=(RA.research&&RA.research.baseOrg)||'', estimated=false;
-    if(!base){ base=1000; estimated=true; }
+    var usingUser=!!(RA.userBase&&RA.userBase>0);
+    var usingResearch=!usingUser&&!!(RA.research&&RA.research.base>0);
+    var base=usingUser?RA.userBase:(usingResearch?RA.research.base:1000);
+    var estimated=!usingUser&&!usingResearch;
+    var baseOrg=usingResearch?((RA.research&&RA.research.baseOrg)||''):'';
     var pen=RA.pen||5, buyers=Math.max(1,Math.round(base*pen/100)), revenue=V*buyers;
     $('fV').textContent=fmt(revenue);
     $('fVlabel').textContent=labelLine(revenue);
-    var baseTxt=estimated?('a channel partner of about '+base.toLocaleString()+' members (estimate you can refine)'):(baseOrg?(baseOrg+', about '+base.toLocaleString()+' members'):('about '+base.toLocaleString()+' members'));
+    var baseTxt=estimated?('about '+base.toLocaleString()+' members (estimate, set your partner size above)'):(baseOrg?(baseOrg+', about '+base.toLocaleString()+' members'):('about '+base.toLocaleString()+' members'));
     $('fVmath').innerHTML='Based on '+baseTxt+'. At '+pen+'%, that is <b>'+buyers.toLocaleString()+'</b> buyers at '+fmt(V)+' each.';
     $('fVmult').textContent='About '+buyers.toLocaleString()+'x a single client.';
     var left=revenue*yrs, perMo=revenue/12, next=revenue*(yrs+1);
@@ -470,6 +483,8 @@
     $('fScore').textContent=tot;
     for(var i=0;i<5;i++){ $('sb'+i).style.width=(start[i]*10)+'%'; }
     $('fBand').textContent=bandText(tot);
+    var eff=(RA.research&&RA.research.base>0)?RA.research.base:1000;
+    var fb=document.getElementById('fBase'); if(fb&&RA.userBase==null) fb.value=eff;
     renderMoney();
     var ow=$('orgwrap'), orgs=(RA.research&&RA.research.orgs)||[];
     ow.innerHTML=orgs.length?orgs.map(orgCard).join(''):'<div class="ev" style="background:var(--lock)">Your Target Map is being finalized.</div>';
