@@ -228,7 +228,7 @@
     </div>
 
     <div class="panel">
-      <h3>Channel Partner Distribution Estimate</h3>
+      <h3>Your channel partner</h3>
       <label style="display:block;font-size:14px;color:var(--ink);margin-bottom:4px">Members in this channel partner</label>
       <input type="number" id="fBase" inputmode="numeric" min="0" step="100" placeholder="Type your partner's size" oninput="setBase(this.value)">
       <div class="slider" style="margin-top:14px">
@@ -236,7 +236,11 @@
         <input type="range" min="1" max="5" value="2" oninput="setPen(this.value)">
         <div class="bar3"><span>1%</span><span>5%</span></div>
       </div>
-      <div class="big" id="fV" style="margin-top:14px">$0</div>
+    </div>
+
+    <div class="panel">
+      <h3>Channel Partner Distribution Estimate</h3>
+      <div class="big" id="fV">$0</div>
       <div style="color:var(--mut);font-size:15px" id="fVlabel"></div>
       <div style="font-size:14px;color:var(--ink);margin-top:2px" id="fVmath"></div>
       <div class="mult" id="fVmult"></div>
@@ -471,12 +475,11 @@
   }
   function esc(x){return (x==null?'':String(x)).replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];});}
   function orgCard(o){
-    var mem = o.members ? ('Members: '+esc(o.members)+(o.member_unit?' '+esc(o.member_unit):'')) : 'Member count not published';
-    var memSrc = o.member_src ? ' <a class="src" href="#" onclick="showSrc(event,\''+esc(o.member_src)+'\',\''+esc(o.member_phrase||'')+'\')">source</a>' : '';
+    var mem = o.members ? ('Members: '+esc(o.members)+(o.member_unit?' '+esc(o.member_unit):'')) : 'Member count: estimate';
     var evSrc = o.evidence_src ? ' <a class="src" href="#" onclick="showSrc(event,\''+esc(o.evidence_src)+'\',\''+esc(o.evidence_phrase||'')+'\')">source</a>' : '';
     return '<div class="org"><div class="n">'+esc(o.name)+'</div>'+
       (o.website?'<div class="w">'+esc(o.website)+'</div>':'')+
-      '<div class="m">'+mem+memSrc+'</div>'+
+      '<div class="m">'+mem+'</div>'+
       (o.evidence?'<div class="ev"><b>Hires outside experts:</b> '+esc(o.evidence)+evSrc+'</div>':'')+
       (o.why?'<div style="font-size:14px;color:var(--ink);margin-top:8px">'+esc(o.why)+'</div>':'')+'</div>';
   }
